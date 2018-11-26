@@ -6,7 +6,6 @@
 #include "colors.h"
 #include "specialpurpose.h"
 
-bool nm_test(long);
 short netmask_set_bits(unsigned long);
 unsigned long compose_address(unsigned short, unsigned short, unsigned short, unsigned short);
 void binary_ip_string(unsigned long, char*);
@@ -137,15 +136,6 @@ int main(int argc, char **argv) {
 	max_clients = (1 << (32 - nm_bits)) - 2;
 	printf("Max. # of clients: \t%u\n\n\n", max_clients);
 	return 0;
-}
-
-bool nm_test(long nm) {
-	short one = 0;
-	for (int i = 0; i < 32; i++) {
-		if ((1 << i) & nm) one = 1;
-		else if (one) return false;
-	}
-	return true;
 }
 
 unsigned long compose_address(unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
