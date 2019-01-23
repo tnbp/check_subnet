@@ -14,7 +14,7 @@ bool is_special_purpose(unsigned long);
 void print_special_purpose(unsigned long);
 
 int main(int argc, char **argv) {
-	unsigned short sdr_ip[4],rcv_ip[4],netmask[4];
+	int sdr_ip[4],rcv_ip[4],netmask[4];
 	short read_input = 0;
 	char str_sdr_ip[4*8+3+1], str_rcv_ip[4*8+3+1], str_netmask_ip[4*8+3+1];
 	printf("Enter sender IP:\t");
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 	}
 	for (int i=0; i<4; i++) {
 		if (sdr_ip[i] > 255) {
-			printf(RED "%d.%d.%d.%d: invalid IP address\n" RESET, sdr_ip[0], sdr_ip[1], sdr_ip[2], sdr_ip[3]);
+			printf(RED "%d.%d.%d.%d: invalid IP address" RESET "\n", sdr_ip[0], sdr_ip[1], sdr_ip[2], sdr_ip[3]);
 			return 1;
 		}
 	}
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 	}
 	for (int i=0; i<4; i++) {
 		if (rcv_ip[i] > 255) {
-			printf(RED "%d.%d.%d.%d: invalid IP address\n" RESET, rcv_ip[0], rcv_ip[1], rcv_ip[2], rcv_ip[3]);
+			printf(RED "%d.%d.%d.%d: invalid IP address" RESET "\n", rcv_ip[0], rcv_ip[1], rcv_ip[2], rcv_ip[3]);
 			return 1;
 		}
 	}
@@ -41,12 +41,12 @@ int main(int argc, char **argv) {
 	}
 	for (int i=0; i<4; i++) {
 		if (netmask[i] > 255) {
-			printf(RED "%d.%d.%d.%d: invalid netmask\n" RESET, netmask[0], netmask[1], netmask[2], netmask[3]);
+			printf(RED "%d.%d.%d.%d: invalid netmask" RESET "\n", netmask[0], netmask[1], netmask[2], netmask[3]);
 			return 1;
 		}
 	}
 	if (netmask_set_bits(compose_address(netmask[0], netmask[1], netmask[2], netmask[3])) == -1) {
-		printf(RED "%d.%d.%d.%d: invalid netmask\n" RESET, netmask[0], netmask[1], netmask[2], netmask[3]);
+		printf(RED "%d.%d.%d.%d: invalid netmask" RESET "\n", netmask[0], netmask[1], netmask[2], netmask[3]);
 		return 1;
 	}
 	// preliminary checks have succeeded at this point - all input is valid
@@ -70,26 +70,26 @@ int main(int argc, char **argv) {
 	// first check - is input a network address?
 	// this is true if apart from netmask bits, all bits are zero ((IP AND NOT NETMASK) == 0)
 	if (!(ulong_sdr_ip & ~ulong_netmask)) {
-		printf(RED "Error: Sender IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a network address!\n" RESET, sdr_ip[0], sdr_ip[1], sdr_ip[2], sdr_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
+		printf(RED "Error: Sender IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a network address!" RESET "\n", sdr_ip[0], sdr_ip[1], sdr_ip[2], sdr_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
 		return 1;
 	}
 	if (!(ulong_rcv_ip & ~ulong_netmask)) {
-		printf(RED "Error: Receiver IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a network address!\n" RESET, rcv_ip[0], rcv_ip[1], rcv_ip[2], rcv_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
+		printf(RED "Error: Receiver IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a network address!" RESET "\n", rcv_ip[0], rcv_ip[1], rcv_ip[2], rcv_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
 		return 1;
 	}
 	// second check - is input a broadcast address?
 	// this is true if apart from netmask bits, all bits are one ((NOT NETMASK AND IP) == NOT NETMASK)
 	if ((ulong_sdr_ip & ~ulong_netmask) == ~ulong_netmask) {
-		printf(RED "Error: Sender IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a broadcast address!\n" RESET, sdr_ip[0], sdr_ip[1], sdr_ip[2], sdr_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
+		printf(RED "Error: Sender IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a broadcast address!" RESET "\n", sdr_ip[0], sdr_ip[1], sdr_ip[2], sdr_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
 		return 1;
 	}
 	if ((ulong_rcv_ip & ~ulong_netmask) == ~ulong_netmask) {
-		printf(RED "Error: Receiver IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a broadcast address!\n" RESET, rcv_ip[0], rcv_ip[1], rcv_ip[2], rcv_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
+		printf(RED "Error: Receiver IP %d.%d.%d.%d / Netmask %d.%d.%d.%d is a broadcast address" RESET "\n", rcv_ip[0], rcv_ip[1], rcv_ip[2], rcv_ip[3], netmask[0], netmask[1], netmask[2], netmask[3]);
 		return 1;
 	}
 	// third check - are sender and receiver addresses identical?
 	if (ulong_sdr_ip == ulong_rcv_ip) {
-		printf(RED "Error: Sender and receiver addresses are identical!\n" RESET);
+		printf(RED "Error: Sender and receiver addresses are identical!" RESET "\n");
 		return 1;
 	}
 	// print binary representations
