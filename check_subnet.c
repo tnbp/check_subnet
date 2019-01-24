@@ -15,7 +15,6 @@ void print_special_purpose(unsigned long);
 
 int main(int argc, char **argv) {
 	int sdr_ip[4],rcv_ip[4],netmask[4];
-	short read_input = 0;
 	char str_sdr_ip[4*8+3+1], str_rcv_ip[4*8+3+1], str_netmask_ip[4*8+3+1];
 	printf("Enter sender IP:\t");
 	while (scanf("%d.%d.%d.%d", &sdr_ip[0], &sdr_ip[1], &sdr_ip[2], &sdr_ip[3]) != 4) {
