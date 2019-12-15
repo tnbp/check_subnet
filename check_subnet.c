@@ -133,7 +133,8 @@ int main(int argc, char **argv) {
 	unsigned long max_clients = 0;
 	short nm_bits = netmask_set_bits(ulong_netmask);
 	max_clients = (1 << (32 - nm_bits)) - 2;
-	printf("Max. # of clients: \t%u\n\n\n", max_clients);
+	max_clients &= 0xFFFFFFFF;
+	printf("Max. # of clients: \t%lu\n\n\n", max_clients);
 	return 0;
 }
 
