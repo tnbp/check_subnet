@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
 	max_clients = (1 << (32 - nm_bits)) - 2;
 	max_clients &= 0xFFFFFFFF;
 	printf("Max. # of clients: \t%lu\n\n\n", max_clients);
-	return 0;
+	return main(argc, argv);
 }
 
 unsigned long compose_address(unsigned short a, unsigned short b, unsigned short c, unsigned short d) {
